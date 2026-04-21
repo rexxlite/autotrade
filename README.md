@@ -1,6 +1,6 @@
 # Paper Futures Bot
 
-Scaffold bot futures paper-trading berbasis Node.js dengan arsitektur yang sengaja meniru pola inti Meridian:
+Scaffold bot futures paper-trading berbasis Node.js dengan arsitektur akurat:
 
 - deterministic screening lebih dulu
 - decision engine di lapisan agent
