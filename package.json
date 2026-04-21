@@ -1,0 +1,21 @@
+{
+  "name": "paper-futures-bot",
+  "version": "0.1.0",
+  "description": "Meridian-style futures bot scaffold for Node.js paper trading.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/cli.js start",
+    "screen": "node src/cli.js screen",
+    "manage": "node src/cli.js manage",
+    "status": "node src/cli.js status",
+    "market": "node src/cli.js market",
+    "flatten": "node src/cli.js flatten"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "node-cron": "^4.1.0"
+  }
+}
