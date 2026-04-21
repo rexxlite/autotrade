@@ -54,18 +54,117 @@ flowchart TD
 
 Kalau `MARKET_DATA_PROVIDER=bybit`, langkah pertama berubah menjadi pengambilan data live dari endpoint Bybit `Get Tickers` dan `Get Kline`, lalu bot menurunkan `trendScore`, `momentumScore`, `liquidityScore`, dan `structureScore` dari data itu.
 
-## Quick Start
+## Mulai Dari Nol
+
+### 1. Prasyarat
+
+- Git sudah terpasang
+- Node.js 20 atau lebih baru
+- Koneksi internet untuk mengambil market data Bybit
+
+Bot ini belum butuh API key Bybit karena execution masih full paper trading lokal.
+
+### 2. Clone Repository
 
 ```bash
-cd paper-futures-bot
-copy .env.example .env
+git clone https://github.com/rexxlite/autotrade.git
+cd autotrade
+```
+
+### 3. Install Dependency
+
+```bash
 npm install
+```
+
+### 4. Buat File Environment
+
+PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Bash:
+
+```bash
+cp .env.example .env
+```
+
+Kalau baru mau testing, biasanya tidak perlu ubah apa pun di `.env`. Default repo ini sudah:
+
+- memakai market data live Bybit
+- menjalankan execution di paper mode lokal
+- memakai simbol futures yang umum dan likuid
+
+### 5. Cek Bot Sudah Siap
+
+```bash
 npm run status
+```
+
+Kalau sukses, kamu akan melihat:
+
+- account paper dengan balance awal
+- `Market Data Provider` aktif
+- belum ada posisi terbuka
+
+### 6. Lihat Snapshot Market Bybit
+
+```bash
 npm run market
+```
+
+Command ini berguna untuk memastikan data futures Bybit berhasil ditarik sebelum kamu mulai screening.
+
+### 7. Jalankan Satu Screening Cycle
+
+```bash
 npm run screen
+```
+
+Bot akan:
+
+- mengambil market snapshot Bybit
+- menyaring kandidat
+- memilih trade terbaik jika ada setup yang lolos
+- membuka posisi paper, bukan posisi real
+
+### 8. Kelola Posisi yang Sudah Terbuka
+
+```bash
 npm run manage
+```
+
+Command ini mengecek stop loss, take profit, trailing stop, dan batas waktu holding.
+
+### 9. Jalankan Scheduler Otomatis
+
+```bash
 npm start
 ```
+
+Mode ini akan menjalankan screening dan management cycle berulang sesuai cron di `.env`.
+
+### 10. Tutup Semua Posisi Paper Secara Manual
+
+```bash
+npm run flatten
+```
+
+Ini berguna sebagai kill switch saat testing.
+
+## Alur Testing Yang Disarankan
+
+Kalau baru pertama kali clone, urutan paling aman biasanya:
+
+1. `npm run status`
+2. `npm run market`
+3. `npm run screen`
+4. `npm run manage`
+5. `npm start`
+
+Kalau hasil `screen` belum membuka posisi, itu normal. Artinya market saat itu tidak lolos threshold strategi yang aktif.
 
 ## Perintah
 
@@ -85,6 +184,13 @@ npm start
 - `BYBIT_KLINE_LIMIT=24`: jumlah candle untuk menghitung trend, momentum, dan struktur.
 
 Mode ini tetap aman karena order tidak dikirim ke Bybit. Yang berubah hanya sumber market data.
+
+## Troubleshooting Singkat
+
+- Kalau `npm install` gagal: cek versi Node.js, pastikan minimal versi 20.
+- Kalau `npm run market` gagal: cek koneksi internet atau coba lagi beberapa detik kemudian.
+- Kalau `npm run screen` tidak membuka posisi: itu biasanya karena tidak ada kandidat yang lolos filter saat itu.
+- Kalau mau kembali ke feed simulasi: ubah `MARKET_DATA_PROVIDER=synthetic` di `.env`.
 
 ## Struktur Folder
 
