@@ -1,6 +1,6 @@
 # Paper Futures Bot
 
-Scaffold bot futures paper-trading berbasis Node.js dengan arsitektur akurat:
+Scaffold bot futures paper-trading berbasis Node.js dengan arsitektur modular untuk screening, eksekusi paper, dan manajemen posisi:
 
 - deterministic screening lebih dulu
 - decision engine di lapisan agent
@@ -33,8 +33,8 @@ flowchart TD
 
 ## Modul Inti
 
-- `src/core/screening-cycle.js`: meniru `runScreeningCycle()` di Meridian. Mengambil market universe, memfilter kandidat, lalu memilih trade terbaik atau `NO_TRADE`.
-- `src/core/management-cycle.js`: meniru `runManagementCycle()`. Menilai posisi terbuka terhadap stop loss, take profit, trailing stop, dan batas waktu.
+- `src/core/screening-cycle.js`: mengambil market universe, memfilter kandidat, lalu memilih trade terbaik atau `NO_TRADE`.
+- `src/core/management-cycle.js`: menilai posisi terbuka terhadap stop loss, take profit, trailing stop, dan batas waktu.
 - `src/core/agent.js`: lapisan decision engine. Saat ini deterministic, tapi bentuknya sudah siap diganti ke LLM nanti.
 - `src/core/tool-executor.js`: gerbang keras untuk aksi seperti `open_paper_position` dan `close_paper_position`.
 - `src/risk/risk-engine.js`: sizing posisi, margin check, daily loss guard, max positions, dan larangan double exposure per simbol.
@@ -211,6 +211,6 @@ paper-futures-bot/
 ## Titik Lanjut
 
 - Tambahkan private Bybit adapter untuk testnet order placement setelah paper flow-nya stabil.
-- Ganti `FuturesAgent` deterministic dengan LLM planner yang memakai prompt mirip Meridian.
+- Ganti `FuturesAgent` deterministic dengan LLM planner yang lebih adaptif.
 - Tambahkan adapter OKX atau Binance Futures di lapisan `exchange/`.
-- Tambahkan Telegram/Discord notifier dan remote config sync jika mau meniru surface ops Meridian lebih dekat.
+- Tambahkan Telegram/Discord notifier dan remote config sync untuk workflow operasional yang lebih nyaman.
